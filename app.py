@@ -92,7 +92,7 @@ if __name__ == "__main__":
 @app.route("/test", methods=["GET"])
 def test_mensaje():
     client = Client(ACCOUNT_SID, AUTH_TOKEN)
-    numero = "+5493413164065"  # tu número
+    numero = "+5493413164065"  # tu número real
     try:
         client.messages.create(
             body=MENSAJE_ALERTA,
@@ -102,4 +102,3 @@ def test_mensaje():
         return jsonify({"status": "mensaje enviado con éxito"})
     except Exception as e:
         return jsonify({"error": str(e)})
-
