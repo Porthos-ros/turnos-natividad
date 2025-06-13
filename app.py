@@ -16,6 +16,7 @@ ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
 AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
 FROM_WHATSAPP = "whatsapp:+14155238886"
 MENSAJE_ALERTA = "¡Hay turnos! Entrá ya a la web con el siguiente link https://www.natividad.org.ar/turnos_enfermos.php"
+CLAVE_LISTADO = "eva2025"
 
 USUARIOS_FILE = "usuarios.json"
 
@@ -42,6 +43,14 @@ def register():
         guardar_usuarios(usuarios)
 
     return jsonify({"ok": True, "registrado": numero}), 200
+
+@app.route("/listado", methods=["GET"])
+def listado_usuarios():
+    clave = request.args.get("clave")
+    if clave != CLAVE_LISTADO:
+        return jsonify({"error": "No autorizado"}), 403
+    usuarios = cargar_usuarios()
+    return jsonify({"usuarios": usuarios})
 
 def hay_turnos_disponibles():
     try:
