@@ -8,12 +8,10 @@ import json
 import os
 from dotenv import load_dotenv
 
-# Cargar variables de entorno desde .env
 load_dotenv()
 
 app = Flask(__name__)
 
-# Config Twilio desde variables de entorno
 ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
 AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
 FROM_WHATSAPP = "whatsapp:+14155238886"
@@ -85,14 +83,10 @@ def iniciar_monitor():
 
 threading.Thread(target=iniciar_monitor, daemon=True).start()
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-
 @app.route("/test", methods=["GET"])
 def test_mensaje():
     client = Client(ACCOUNT_SID, AUTH_TOKEN)
-    numero = "+5493413164065"  # tu número real
+    numero = "+5493413164065"
     try:
         client.messages.create(
             body=MENSAJE_ALERTA,
@@ -102,3 +96,7 @@ def test_mensaje():
         return jsonify({"status": "mensaje enviado con éxito"})
     except Exception as e:
         return jsonify({"error": str(e)})
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
