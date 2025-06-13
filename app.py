@@ -89,3 +89,17 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
 
+@app.route("/test", methods=["GET"])
+def test_mensaje():
+    client = Client(ACCOUNT_SID, AUTH_TOKEN)
+    numero = "+5493413164065"  # tu número
+    try:
+        client.messages.create(
+            body=MENSAJE_ALERTA,
+            from_=FROM_WHATSAPP,
+            to=f"whatsapp:{numero}"
+        )
+        return jsonify({"status": "mensaje enviado con éxito"})
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
